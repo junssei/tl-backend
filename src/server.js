@@ -1,8 +1,7 @@
-import authRoutes from "./routes/auth.js";
-
 const express = require("express");
 const cors = require("cors");
 const pool = require("./db");
+const authRoutes = require("./routes/auth");
 
 require("dotenv").config();
 const app = express();
