@@ -1,7 +1,7 @@
 // routes/auth.js
-import express from "express";
-import bcrypt from "bcrypt";
-import pool from "../db.js";
+const express = require("express");
+const bcrypt = require("bcrypt");
+const pool = require("../db");
 
 const router = express.Router();
 
