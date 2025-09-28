@@ -21,16 +21,18 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// Customer Screen
 app.get("/customers", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM customer");
+    const result = await pool.query("SELECT credits.id, credits.amount, customer.c_fullname, customer.c_gender FROM credits INNER JOIN customer ON credits.customerid = customer.id;");
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get("/customers/:id", async (req, res) => {
+// Customer Profile
+app.get("/customers/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query("SELECT * FROM customer WHERE id = $1", [id]);
