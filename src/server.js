@@ -28,6 +28,11 @@ app.get("/users/:userid/customerlist", async (req, res) => {
 
     // users customer
     const result = await pool.query("SELECT credits.id, credits.amount, customer.c_fullname, customer.c_gender FROM customer INNER JOIN credits ON credits.customerid = customer.id WHERE userid = $1", [userid]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "No Customer (Add Customer)" });
+    }
+    
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
