@@ -22,7 +22,7 @@ app.get("/users", async (req, res) => {
 });
 
 // Customer Screen
-app.get("users/:id/customerlist", async (req, res) => {
+app.get("/users/:userid/customerlist", async (req, res) => {
   try {
     const { userid } = req.params
 
@@ -35,7 +35,7 @@ app.get("users/:id/customerlist", async (req, res) => {
 });
 
 // Customer Profile
-app.get("users/:id/customers/profile/:id", async (req, res) => {
+app.get("/users/:id/customers/profile/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query("SELECT * FROM customer WHERE id = $1", [id]);
