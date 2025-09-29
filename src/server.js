@@ -26,6 +26,7 @@ app.get("users/:id/customerlist", async (req, res) => {
   try {
     const { userid } = req.params
 
+    // users customer
     const result = await pool.query("SELECT credits.id, credits.amount, customer.c_fullname, customer.c_gender FROM customer INNER JOIN credits ON credits.customerid = customer.id WHERE userid = $1", [userid]);
     res.json(result.rows);
   } catch (err) {
