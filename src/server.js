@@ -4,6 +4,7 @@ import cors from 'cors';
 import pool from "./db.js";
 import authRoutes from "./routes/auth.js";
 import uploadRouter from './routes/uploadRoute.mjs';
+import customerRoutes from './routes/customer/createCustomer.js';
 
 dotenv.config();
 const app = express();
@@ -15,6 +16,8 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 
 app.use('/api', uploadRouter);
+
+app.use('/customers', customerRoutes);
 
 app.get("/users", async (req, res) => {
   try {
