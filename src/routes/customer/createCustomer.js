@@ -19,7 +19,14 @@ router.post("/create", async (req, res) => {
       [c_fullname, c_phonenumber, c_address, c_gender, userid]
     );
 
-    res.status(201).json({ message: "Customer created", customer: result.rows[0] });
+    const customerId = result.rows[0].id;
+
+    const credits = await pool.query(
+      "INSERT INTO credits (amount, customerid) VALUES ($1, $2) RETURNING *",
+      [1000, customerId]
+    );
+
+    res.status(201).json({ message: "Customer created", customer: result.rows[0], credits: credits.rows[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Server error" });
