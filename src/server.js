@@ -35,7 +35,7 @@ app.get('/users/:userid/customerlist', async (req, res) => {
 
     // users customer
     const result = await pool.query(
-      'SELECT c_fullname, c_gender, c_phonenumber FROM customer WHERE userid = $1',
+      'SELECT * FROM customer WHERE userid = $1',
       [userid],
     );
 
