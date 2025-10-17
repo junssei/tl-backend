@@ -64,7 +64,7 @@ app.get('/users/:userid/customerlist2', async (req, res) => {
       return res.json({ message: 'No rows found', data: [] });
     }
 
-    res.json(result.rows);
+    res.json(result2.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
