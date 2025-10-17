@@ -35,7 +35,7 @@ app.get('/users/:userid/customerlist', async (req, res) => {
 
     // users customer
     const result = await pool.query(
-      'SELECT credits_table.id AS credit_id, credits_table.amount, credits_table.created_at, credits_table.balance, credits_table.status, credits_table.due_date, customer_table.c_fullname, customer_table.c_phonenumber, customer_table.c_address, customer_table.c_createdat, customer_table.c_profileimg FROM credits_table INNER JOIN customer_table ON credits_table.customerid = customer_table.id WHERE customer_table.userid = $1',
+      'SELECT credits.id AS credit_id, credits.amount, credits.created_at, credits.balance, credits.status, credits.due_date, customer.c_fullname, customer.c_phonenumber, customer.c_address, customer.c_createdat, customer.c_profileimg FROM credits INNER JOIN customer ON credits.customerid = customer.id WHERE customer.userid = $1',
       [userid],
     );
 
