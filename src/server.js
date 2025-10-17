@@ -38,12 +38,37 @@ app.get('/users/:userid/customerlist', async (req, res) => {
       'SELECT * FROM customer WHERE userid = $1',
       [userid],
     );
+    const result2 = await pool.query(
+      'SELECT credits.id AS credit_id, credits.amount, credits.created_at, credits.balance, credits.status, credits.due_date, , customer.id, customer.c_fullname, customer.c_phonenumber, customer.c_address, customer.c_createdat, customer.c_profileimg FROM credits INNER JOIN customer ON credits.customerid = customer.id WHERE customer.userid = $1',
+      [userid],
+    );
 
     if (result.rows.length === 0) {
       return res.json({ message: 'No rows found', data: [] });
     }
 
     res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Customer Screen 2
+app.get('/users/:userid/customerlist2', async (req, res) => {
+  try {
+    const { userid } = req.params;
+
+    // users customer
+    const result2 = await pool.query(
+      'SELECT credits.id AS credit_id, credits.amount, credits.created_at, credits.balance, credits.status, credits.due_date, , customer.id, customer.c_fullname, customer.c_phonenumber, customer.c_address, customer.c_createdat, customer.c_profileimg FROM credits INNER JOIN customer ON credits.customerid = customer.id WHERE customer.userid = $1',
+      [userid],
+    );
+
+    if (result2.rows.length === 0) {
+      return res.json({ message: 'No rows found', data: [] });
+    }
+
+    res.json(result2.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
