@@ -50,7 +50,7 @@ app.get('/users/:userid/customerlist', async (req, res) => {
 });
 
 // Customer Screen 2
-app.get('/users/:userid/customerlist', async (req, res) => {
+app.get('/users/:userid/customerlist2', async (req, res) => {
   try {
     const { userid } = req.params;
 
