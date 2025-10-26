@@ -38,8 +38,7 @@ router.post('/create', async (req, res) => {
 // Edit
 router.post('/edit', async (req, res) => {
   try {
-    const { id, c_fullname, c_phonenumber, c_address, c_gender, userid } =
-      req.body;
+    const { id, c_fullname, c_phonenumber, c_address, c_gender } = req.body;
 
     const existing = await pool.query('SELECT * FROM customer WHERE id = $1', [
       id,
@@ -49,8 +48,8 @@ router.post('/edit', async (req, res) => {
     }
 
     const result = await pool.query(
-      'UPDATE customer SET c_fullname = $1, c_phonenumber = $2, c_address = $3, c_gender = $4, userid = $5 WHERE id = $6 RETURNING *',
-      [c_fullname, c_phonenumber, c_address, c_gender, userid, id],
+      'UPDATE customer SET c_fullname = $1, c_phonenumber = $2, c_address = $3, c_gender = $4 WHERE id = $5 RETURNING *',
+      [c_fullname, c_phonenumber, c_address, c_gender, id],
     );
 
     res
