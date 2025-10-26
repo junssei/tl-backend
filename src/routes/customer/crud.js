@@ -61,4 +61,27 @@ router.post('/edit', async (req, res) => {
   }
 });
 
+// Delete
+router.post('/delete', async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    // Check if customer exists
+    const existing = await pool.query('SELECT * FROM customer WHERE id = $1', [
+      id,
+    ]);
+    if (existing.rows.length === 0) {
+      return res.status(404).json({ error: 'Customer not found' });
+    }
+
+    // Delete customer
+    await pool.query('DELETE FROM customer WHERE id = $1', [id]);
+
+    res.status(200).json({ message: 'Customer deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 export default router;
