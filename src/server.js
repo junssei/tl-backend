@@ -4,7 +4,7 @@ import cors from 'cors';
 import pool from './db.js';
 import authRoutes from './routes/auth.js';
 import uploadRouter from './routes/uploadRoute.mjs';
-import customerRoutes from './routes/customer/createCustomer.js';
+import customerRoutes from './routes/customer/crud.js';
 
 dotenv.config();
 const app = express();
@@ -49,29 +49,8 @@ app.get('/users/:userid/customerlist', async (req, res) => {
   }
 });
 
-// Customer Screen 2
-app.get('/users/:userid/customerlist2', async (req, res) => {
-  try {
-    const { userid } = req.params;
-
-    // users customer
-    const result2 = await pool.query(
-      'SELECT credits.id AS credit_id, credits.amount, credits.created_at, credits.balance, credits.status, credits.due_date, customer.id AS customer_id, customer.c_fullname, customer.c_phonenumber, customer.c_address, customer.c_createdat, customer.c_profileimg FROM customer INNER JOIN credits ON customer.id = credits.customerid WHERE customer.userid = $1',
-      [userid],
-    );
-
-    if (result2.rows.length === 0) {
-      return res.json({ message: 'No rows found', data: [] });
-    }
-
-    res.json(result2.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // Customer Profile
-app.get('/users/:id/customers/profile/:id', async (req, res) => {
+app.get('/user/:id/customer/:id/profile', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query('SELECT * FROM customer WHERE id = $1', [
