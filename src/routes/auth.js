@@ -52,16 +52,7 @@ router.post('/login', async (req, res) => {
 
     res.json({
       message: 'Login successful',
-      user: {
-        id: user.id,
-        role: user.role,
-        email: user.email,
-        gender: user.gender,
-        username: user.username,
-        profileimg: user.profile_img,
-        phonenumber: user.phonenumber,
-        tindahanname: user.tindahan_name,
-      },
+      user: user,
     });
   } catch (err) {
     console.error(err);
