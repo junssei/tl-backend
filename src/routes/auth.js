@@ -54,10 +54,13 @@ router.post('/login', async (req, res) => {
       message: 'Login successful',
       user: {
         id: user.id,
-        name: user.username,
-        email: user.email,
         role: user.role,
+        email: user.email,
+        gender: user.gender,
+        username: user.username,
         profileimg: user.profile_img,
+        phonenumber: user.phonenumber,
+        tindahanname: user.tindahan_name,
       },
     });
   } catch (err) {

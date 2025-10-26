@@ -21,7 +21,9 @@ app.use('/customers', customerRoutes);
 
 app.get('/users', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM users');
+    const result = await pool.query(
+      'SELECT (id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender) FROM users',
+    );
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
