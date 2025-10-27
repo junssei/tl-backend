@@ -16,6 +16,31 @@ router.get('/all', async (req, res) => {
   }
 });
 
+router.get('/:userid', async (req, res) => {
+  const { userid } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender FROM users WHERE id = $1`,
+      [userid],
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get('/:userid/update', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender FROM users',
+    );
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GetAll User Customers
 router.get('/:userid/customerlist', async (req, res) => {
   try {
