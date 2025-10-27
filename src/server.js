@@ -20,7 +20,7 @@ app.use('/auth', authRoutes);
 
 app.use('/api', uploadRouter);
 
-app.use('/users', userRoutes);
+app.use('/user', userRoutes);
 app.use('/products', productRoutes);
 app.use('/customers', customerRoutes);
 

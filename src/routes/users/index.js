@@ -5,7 +5,7 @@ import pool from '../../db.js';
 const router = express.Router();
 
 // GetAll users
-app.get('', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT (id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender) FROM users',
