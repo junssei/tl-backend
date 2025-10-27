@@ -36,7 +36,7 @@ router.post('/create', async (req, res) => {
 });
 
 // Edit
-router.post('/edit', async (req, res) => {
+router.post('/update', async (req, res) => {
   try {
     const { id, c_fullname, c_phonenumber, c_address, c_gender } = req.body;
 

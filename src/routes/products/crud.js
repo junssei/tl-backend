@@ -43,48 +43,52 @@ router.post('/create', async (req, res) => {
 });
 
 // Edit
-router.post('/edit', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
   try {
-    const { id, c_fullname, c_phonenumber, c_address, c_gender } = req.body;
+    const { id } = req.params;
+    const { product_name, category, brand, description, price, stock, unit } =
+      req.body;
 
-    const existing = await pool.query('SELECT * FROM customer WHERE id = $1', [
+    const existing = await pool.query('SELECT * FROM products WHERE id = $1', [
       id,
     ]);
     if (existing.rows.length === 0) {
-      return res.status(404).json({ error: 'Customer not found' });
+      return res.status(404).json({ error: 'Product not found.' });
     }
 
     const result = await pool.query(
-      'UPDATE customer SET c_fullname = $1, c_phonenumber = $2, c_address = $3, c_gender = $4 WHERE id = $5 RETURNING *',
-      [c_fullname, c_phonenumber, c_address, c_gender, id],
+      `UPDATE products
+       SET product_name = $1, category = $2, brand = $3, description = $4,
+           price = $5, stock = $6, unit = $7
+       WHERE id = $8
+       RETURNING *`,
+      [product_name, category, brand, description, price, stock, unit, id],
     );
 
-    res
-      .status(200)
-      .json({ message: 'Customer updated', customer: result.rows[0] });
+    res.json({
+      message: 'Product updated successfully.',
+      product: result.rows[0],
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// Delete
-router.post('/delete', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
-    // Check if customer exists
-    const existing = await pool.query('SELECT * FROM customer WHERE id = $1', [
+    const existing = await pool.query('SELECT * FROM products WHERE id = $1', [
       id,
     ]);
     if (existing.rows.length === 0) {
-      return res.status(404).json({ error: 'Customer not found' });
+      return res.status(404).json({ error: 'Product not found.' });
     }
 
-    // Delete customer
-    await pool.query('DELETE FROM customer WHERE id = $1', [id]);
+    await pool.query('DELETE FROM products WHERE id = $1', [id]);
 
-    res.status(200).json({ message: 'Customer deleted successfully' });
+    res.json({ message: 'Product deleted successfully.' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
