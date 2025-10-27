@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/create', async (req, res) => {
   try {
     const {
-      userid,
+      user_id,
       product_name,
       category,
       brand,
@@ -20,7 +20,7 @@ router.post('/create', async (req, res) => {
 
     const existing = await pool.query(
       'SELECT * FROM products WHERE product_name = $1 AND brand = $2 AND userid = $3',
-      [product_name, brand, userid],
+      [product_name, brand, user_id],
     );
 
     if (existing.rows.length > 0) {
@@ -29,7 +29,7 @@ router.post('/create', async (req, res) => {
 
     const result = await pool.query(
       'INSERT INTO products (user_id, product_name, category, brand, description, price, stock, unit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [userid, product_name, category, brand, description, price, stock, unit],
+      [user_id, product_name, category, brand, description, price, stock, unit],
     );
 
     res.status(201).json({
