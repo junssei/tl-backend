@@ -28,7 +28,7 @@ router.post('/create', async (req, res) => {
     }
 
     const result = await pool.query(
-      'INSERT INTO products (user_id, product_name, category, brand, description, price, stock, unit) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      'INSERT INTO products (user_id, product_name, category, brand, description, price, stock, unit) VALUES ($1, $2, $3, $4, $5, $6::numeric, $7, $8) RETURNING *',
       [user_id, product_name, category, brand, description, price, stock, unit],
     );
 
