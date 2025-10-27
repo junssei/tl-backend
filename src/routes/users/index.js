@@ -5,7 +5,7 @@ import pool from '../../db.js';
 const router = express.Router();
 
 // GetAll users
-app.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT (id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender) FROM users',
@@ -17,7 +17,7 @@ app.get('/', async (req, res) => {
 });
 
 // GetAll User Customers
-app.get('/:userid/customerlist', async (req, res) => {
+router.get('/:userid/customerlist', async (req, res) => {
   try {
     const { userid } = req.params;
 
@@ -38,7 +38,7 @@ app.get('/:userid/customerlist', async (req, res) => {
 });
 
 // Get Customer Profile for specific user
-app.get('/:userid/customer/:customerid/profile', async (req, res) => {
+router.get('/:userid/customer/:customerid/profile', async (req, res) => {
   try {
     const { customerid, userid } = req.params;
     const result = await pool.query(
