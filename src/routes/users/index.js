@@ -115,7 +115,7 @@ router.get('/:userid/product/:productid', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.json({ message: 'No rows found', data });
+      return res.json({ message: 'No rows found', data: [] });
     }
 
     res.json(result.rows);
