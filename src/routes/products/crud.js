@@ -76,19 +76,20 @@ router.put('/update/:id', async (req, res) => {
   }
 });
 
-router.delete('/delete/:id', async (req, res) => {
+router.post('/delete/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const existing = await pool.query('SELECT * FROM products WHERE id = $1', [
-      id,
-    ]);
+    const existing = await pool.query(
+      'SELECT * FROM products WHERE product_id = $1',
+      [id],
+    );
 
     if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Product not found.' });
     }
 
-    await pool.query('DELETE FROM products WHERE id = $1', [id]);
+    await pool.query('DELETE FROM products WHERE product_id = $1', [id]);
 
     res.json({ message: 'Product deleted successfully.' });
   } catch (err) {
