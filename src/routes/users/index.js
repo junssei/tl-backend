@@ -106,12 +106,12 @@ router.get('/:userid/productlist', async (req, res) => {
 // Get User product
 router.get('/:userid/product/:productid', async (req, res) => {
   try {
-    const { userid } = req.params;
+    const { userid, productid } = req.params;
 
     // user product
     const result = await pool.query(
       'SELECT * FROM products WHERE user_id = $1 AND product_id = $2',
-      [userid],
+      [userid, productid],
     );
 
     if (result.rows.length === 0) {
