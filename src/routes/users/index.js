@@ -82,7 +82,7 @@ router.get('/:userid/customer/:customerid/profile', async (req, res) => {
   }
 });
 
-// GetAll User Customers
+// GetAll User Products
 router.get('/:userid/productlist', async (req, res) => {
   try {
     const { userid } = req.params;
@@ -90,6 +90,27 @@ router.get('/:userid/productlist', async (req, res) => {
     // users customer
     const result = await pool.query(
       'SELECT * FROM products WHERE user_id = $1',
+      [userid],
+    );
+
+    if (result.rows.length === 0) {
+      return res.json({ message: 'No rows found', data: [] });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get User product
+router.get('/:userid/product/:productid', async (req, res) => {
+  try {
+    const { userid } = req.params;
+
+    // user product
+    const result = await pool.query(
+      'SELECT * FROM products WHERE user_id = $1 AND product_id = $2',
       [userid],
     );
 
