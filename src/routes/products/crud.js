@@ -59,8 +59,8 @@ router.put('/update/:id', async (req, res) => {
     const result = await pool.query(
       `UPDATE products
        SET product_name = $1, category = $2, brand = $3, description = $4,
-           price = $5, stock = $6, unit = $7
-       WHERE id = $8
+           price = $5::numeric, stock = $6, unit = $7
+       WHERE product_id = $8
        RETURNING *`,
       [product_name, category, brand, description, price, stock, unit, id],
     );
