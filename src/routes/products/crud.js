@@ -49,9 +49,10 @@ router.put('/update/:id', async (req, res) => {
     const { product_name, category, brand, description, price, stock, unit } =
       req.body;
 
-    const existing = await pool.query('SELECT * FROM products WHERE id = $1', [
-      id,
-    ]);
+    const existing = await pool.query(
+      'SELECT * FROM products WHERE product_id = $1',
+      [id],
+    );
     if (existing.rows.length === 0) {
       return res.status(404).json({ error: 'Product not found.' });
     }
