@@ -4,7 +4,18 @@ import pool from '../../db.js';
 
 const router = express.Router();
 
-// GetAll users
+// router.get('/report', async (req, res) => {
+//   try {
+//     const result = await pool.query(
+//       'SELECT id, email, username, phonenumber, createdat, tindahan_name, role, profile_img, gender FROM users',
+//     );
+//     res.json(result.rows);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+// Get All Users
 router.get('/all', async (req, res) => {
   try {
     const result = await pool.query(
@@ -16,6 +27,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// Get Specific User
 router.get('/:userid', async (req, res) => {
   const { userid } = req.params;
 
@@ -30,6 +42,7 @@ router.get('/:userid', async (req, res) => {
   }
 });
 
+// Update Specific User
 router.get('/:userid/update', async (req, res) => {
   try {
     const result = await pool.query(
@@ -41,7 +54,7 @@ router.get('/:userid/update', async (req, res) => {
   }
 });
 
-// GetAll User Customers
+// Get All User Customers
 router.get('/:userid/customerlist', async (req, res) => {
   try {
     const { userid } = req.params;
@@ -62,7 +75,7 @@ router.get('/:userid/customerlist', async (req, res) => {
   }
 });
 
-// Get Customer Profile for specific user
+// Get Customer Profile for Specific User
 router.get('/:userid/customer/:customerid/profile', async (req, res) => {
   try {
     const { customerid, userid } = req.params;
@@ -82,7 +95,7 @@ router.get('/:userid/customer/:customerid/profile', async (req, res) => {
   }
 });
 
-// GetAll User Products
+// Get All User Products
 router.get('/:userid/productlist', async (req, res) => {
   try {
     const { userid } = req.params;
