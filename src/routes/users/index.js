@@ -59,15 +59,10 @@ router.get('/:userid/customerlist', async (req, res) => {
   try {
     const { userid } = req.params;
 
-    // users customer
     const result = await pool.query(
       'SELECT * FROM customer WHERE userid = $1',
       [userid],
     );
-
-    if (result.rows.length === 0) {
-      return res.json({ message: 'No rows found', data: [] });
-    }
 
     res.json(result.rows);
   } catch (err) {
@@ -100,15 +95,10 @@ router.get('/:userid/productlist', async (req, res) => {
   try {
     const { userid } = req.params;
 
-    // users customer
     const result = await pool.query(
       'SELECT * FROM products WHERE user_id = $1',
       [userid],
     );
-
-    if (result.rows.length === 0) {
-      return res.json({ message: 'No rows found', data: [] });
-    }
 
     res.json(result.rows);
   } catch (err) {
