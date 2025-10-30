@@ -10,6 +10,7 @@ import customerRoutes from './routes/customer/crud.js';
 
 import ordersRouter from './routes/orders.js';
 import creditsRouter from './routes/credits.js';
+import overviewRouter from './routes/overview.js';
 import paymentsRouter from './routes/payments.js';
 import orderItemsRouter from './routes/orderItems.js';
 
@@ -33,6 +34,7 @@ app.use('/orders', ordersRouter);
 app.use('/credits', creditsRouter);
 app.use('/payments', paymentsRouter);
 app.use('/order-items', orderItemsRouter);
+app.use('/overview', overviewRouter);
 
 // health
 app.get('/health', (req, res) => res.json({ ok: true }));
