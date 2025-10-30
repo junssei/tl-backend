@@ -1,3 +1,5 @@
+import pool from '../db.js';
+
 export default async function withTransaction(work) {
     const client = await pool.connect();
     try {
