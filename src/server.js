@@ -6,7 +6,6 @@ import authRoutes from './routes/auth.js';
 import uploadRouter from './routes/uploadRoute.mjs';
 
 import userRoutes from './routes/users/index.js';
-import orderRoutes from './routes/orders/crud.js';
 import productRoutes from './routes/products/crud.js';
 import customerRoutes from './routes/customer/crud.js';
 
@@ -28,7 +27,6 @@ app.use('/auth', authRoutes);
 app.use('/api', uploadRouter);
 
 app.use('/user', userRoutes);
-app.use('/orders', orderRoutes);
 app.use('/products', productRoutes);
 app.use('/customers', customerRoutes);
 
