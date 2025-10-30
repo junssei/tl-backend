@@ -14,13 +14,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'customerid, userid, total_amount, status are required' });
     }
 
-    // Use snake_case columns that typically exist; omit quantity
+    // Include quantity to satisfy NOT NULL constraint in some schemas
     const insert = `
-      INSERT INTO orders (user_id, customer_id, total_amount, status, created_at)
-      VALUES ($1, $2, $3, $4, NOW())
+      INSERT INTO orders (user_id, customer_id, quantity, total_amount, status, created_at)
+      VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING *;
     `;
-    const { rows } = await pool.query(insert, [userid, customerid, total_amount, status]);
+    const { rows } = await pool.query(insert, [userid, customerid, 0, total_amount, status]);
     const inserted = rows[0] || {};
     const id = inserted.order_id || inserted.id;
     if (!id) {
