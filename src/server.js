@@ -4,7 +4,6 @@ import express from 'express';
 import authRoutes from './routes/auth.js';
 import uploadRouter from './routes/uploadRoute.mjs';
 
-
 import ordersRouter from './routes/orders.js';
 import creditsRouter from './routes/credits.js';
 import userRoutes from './routes/users/index.js';
