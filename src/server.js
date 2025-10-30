@@ -10,6 +10,12 @@ import orderRoutes from './routes/orders/crud.js';
 import productRoutes from './routes/products/crud.js';
 import customerRoutes from './routes/customer/crud.js';
 
+import ordersRouter from './routes/orders.js';
+import orderItemsRouter from './routes/orderItems.js';
+import productsRouter from './routes/products.js';
+import creditsRouter from './routes/credits.js';
+import paymentsRouter from './routes/payments.js';
+
 dotenv.config();
 const app = express();
 
@@ -25,6 +31,21 @@ app.use('/user', userRoutes);
 app.use('/orders', orderRoutes);
 app.use('/products', productRoutes);
 app.use('/customers', customerRoutes);
+
+// routes
+app.use('/orders', ordersRouter);
+app.use('/credits', creditsRouter);
+app.use('/payments', paymentsRouter);
+app.use('/order-items', orderItemsRouter);
+
+// health
+app.get('/health', (req, res) => res.json({ ok: true }));
+
+// error fallback
+app.use((err, req, res, next) => {
+  console.error('Unhandled', err);
+  res.status(500).json({ error: 'internal_error' });
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

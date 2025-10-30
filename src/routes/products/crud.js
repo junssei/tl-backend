@@ -98,4 +98,51 @@ router.post('/delete/:id', async (req, res) => {
   }
 });
 
+// Add this to your existing products router file (same file as create/update/delete)
+router.patch('/:id/reduce-stock', async (req, res) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  const qty = Number(quantity);
+  if (!id || !Number.isInteger(Number(id)) || !qty || qty <= 0) {
+    return res.status(400).json({ error: 'id and positive quantity are required' });
+  }
+
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Lock the product row to prevent concurrent stock updates
+    const lock = await client.query(
+      'SELECT stock FROM products WHERE product_id = $1 FOR UPDATE',
+      [id],
+    );
+
+    if (lock.rowCount === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ error: 'product_not_found' });
+    }
+
+    const current = Number(lock.rows[0].stock || 0);
+    if (current < qty) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ error: 'insufficient_stock', current });
+    }
+
+    const updated = await client.query(
+      'UPDATE products SET stock = stock - $2, updated_at = NOW() WHERE product_id = $1 RETURNING product_id, stock',
+      [id, qty],
+    );
+
+    await client.query('COMMIT');
+    return res.json({ product_id: updated.rows[0].product_id, new_stock: Number(updated.rows[0].stock) });
+  } catch (err) {
+    try { await client.query('ROLLBACK'); } catch {}
+    console.error('PATCH /products/:id/reduce-stock', err);
+    return res.status(500).json({ error: 'server_error' });
+  } finally {
+    client.release();
+  }
+});
+
 export default router;
