@@ -1,6 +1,6 @@
 // routes/credits.js
 import { Router } from 'express';
-import pool from '../db/pool.js';
+import pool from '../db.js';
 
 const router = Router();
 
