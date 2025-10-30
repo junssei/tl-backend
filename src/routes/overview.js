@@ -137,19 +137,19 @@ router.get('/ui', (_req, res) => {
     function escapeHtml(v){ return String(v).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
     function renderKPIs(summary){
-      kpisEl.innerHTML = entities.map(key => `
-        <div class="card kpi">
-          <div class="label">${key.replace('_',' ')}</div>
-          <div class="value">${summary?.[key] ?? 0}</div>
-        </div>
-      `).join('');
+      kpisEl.innerHTML = entities.map(function(key){
+        return '<div class="card kpi">'
+          + '<div class="label">' + key.replace('_',' ') + '</div>'
+          + '<div class="value">' + (summary && summary[key] != null ? summary[key] : 0) + '</div>'
+          + '</div>';
+      }).join('');
     }
 
     function renderTabs(){
-      tabsEl.innerHTML = entities.map(key => `
-        <button class="tab ${key===activeTab?'active':''}" data-key="${key}">${key.replace('_',' ')}</button>
-      `).join('');
-      tabsEl.querySelectorAll('.tab').forEach(btn => btn.onclick = () => { activeTab = btn.dataset.key; renderTabs(); renderTable(window.__data); });
+      tabsEl.innerHTML = entities.map(function(key){
+        return '<button class="tab ' + (key===activeTab?'active':'') + '" data-key="' + key + '">' + key.replace('_',' ') + '</button>';
+      }).join('');
+      tabsEl.querySelectorAll('.tab').forEach(function(btn){ btn.onclick = function(){ activeTab = btn.dataset.key; renderTabs(); renderTable(window.__data); }; });
     }
 
     function renderTable(data){
@@ -157,9 +157,11 @@ router.get('/ui', (_req, res) => {
       const rows = data?.[activeTab] || [];
       if (!rows.length){ tableAreaEl.innerHTML = '<div class="card"><span class="error">No data</span></div>'; return; }
       const columns = Object.keys(rows[0]);
-      const thead = '<thead><tr>'+columns.map(c=>`<th>${escapeHtml(c)}</th>`).join('')+'</tr></thead>';
-      const tbody = '<tbody>'+rows.map(r=>'<tr>'+columns.map(c=>`<td>${escapeHtml(r[c] ?? '')}</td>`).join('')+'</tr>').join('')+'</tbody>';
-      tableAreaEl.innerHTML = `<div class="card"><table>${thead}${tbody}</table></div>`;
+      const thead = '<thead><tr>' + columns.map(function(c){ return '<th>' + escapeHtml(c) + '</th>'; }).join('') + '</tr></thead>';
+      const tbody = '<tbody>' + rows.map(function(r){
+        return '<tr>' + columns.map(function(c){ return '<td>' + escapeHtml((r[c] != null ? r[c] : '')) + '</td>'; }).join('') + '</tr>';
+      }).join('') + '</tbody>';
+      tableAreaEl.innerHTML = '<div class="card"><table>' + thead + tbody + '</table></div>';
     }
 
     async function load(){

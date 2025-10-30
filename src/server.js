@@ -4,15 +4,15 @@ import express from 'express';
 import authRoutes from './routes/auth.js';
 import uploadRouter from './routes/uploadRoute.mjs';
 
-import userRoutes from './routes/users/index.js';
-import productRoutes from './routes/products/crud.js';
-import customerRoutes from './routes/customer/crud.js';
 
 import ordersRouter from './routes/orders.js';
 import creditsRouter from './routes/credits.js';
+import userRoutes from './routes/users/index.js';
 import overviewRouter from './routes/overview.js';
 import paymentsRouter from './routes/payments.js';
 import orderItemsRouter from './routes/orderItems.js';
+import productRoutes from './routes/products/crud.js';
+import customerRoutes from './routes/customer/crud.js';
 
 dotenv.config();
 const app = express();
@@ -33,8 +33,8 @@ app.use('/customers', customerRoutes);
 app.use('/orders', ordersRouter);
 app.use('/credits', creditsRouter);
 app.use('/payments', paymentsRouter);
-app.use('/order-items', orderItemsRouter);
 app.use('/overview', overviewRouter);
+app.use('/order-items', orderItemsRouter);
 
 // health
 app.get('/health', (req, res) => res.json({ ok: true }));
