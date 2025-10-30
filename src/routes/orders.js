@@ -14,16 +14,22 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'customerid, userid, total_amount, status are required' });
     }
 
+    // Use snake_case columns that typically exist; omit quantity
     const insert = `
-      INSERT INTO orders (user_id, customer_id, quantity, totalAmount, status, created_at)
-      VALUES ($1, $2, $3, $4, $5, NOW())
-      RETURNING order_id;
+      INSERT INTO orders (user_id, customer_id, total_amount, status, created_at)
+      VALUES ($1, $2, $3, $4, NOW())
+      RETURNING *;
     `;
-    const { rows } = await pool.query(insert, [userid, customerid, 0, total_amount, status]);
-    return res.json({ id: rows[0].order_id });
+    const { rows } = await pool.query(insert, [userid, customerid, total_amount, status]);
+    const inserted = rows[0] || {};
+    const id = inserted.order_id || inserted.id;
+    if (!id) {
+      return res.status(500).json({ error: 'order_id_missing' });
+    }
+    return res.json({ id });
   } catch (err) {
     console.error('POST /orders', err);
-    return res.status(500).json({ error: 'internal_error' });
+    return res.status(500).json({ error: err.message || 'internal_error' });
   }
 });
 
