@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
       }
 
       const payInsert = `
-        INSERT INTO public.payments (credit_id, amount_paid, payment_date)
+        INSERT INTO payments (credit_id, amount_paid, payment_date)
         VALUES ($1, $2, NOW())
         RETURNING id;
       `;

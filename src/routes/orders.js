@@ -15,7 +15,7 @@ router.post('/', async (req, res) => {
     }
 
     const insert = `
-      INSERT INTO public.orders (user_id, customer_id, quantity, totalAmount, status, created_at)
+      INSERT INTO orders (user_id, customer_id, quantity, totalAmount, status, created_at)
       VALUES ($1, $2, $3, $4, $5, NOW())
       RETURNING order_id;
     `;

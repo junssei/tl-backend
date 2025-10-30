@@ -15,7 +15,7 @@ router.post('/bulk', async (req, res) => {
   try {
     const inserted = await withTransaction(async (client) => {
       const text =
-        'INSERT INTO public.order_products (order_id, product_id, quantity, subtotal) VALUES ($1, $2, $3, $4)';
+        'INSERT INTO order_products (order_id, product_id, quantity, subtotal) VALUES ($1, $2, $3, $4)';
       for (const it of items) {
         if (!it.orderid || !it.productid || it.quantity == null || it.subtotal == null) {
           throw new Error('invalid_item');
