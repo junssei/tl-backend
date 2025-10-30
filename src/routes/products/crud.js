@@ -145,4 +145,54 @@ router.patch('/:id/reduce-stock', async (req, res) => {
   }
 });
 
+// GET /products/:id/history?userId=123&limit=50
+// Returns order history for a product with customer, qty, subtotal, and aggregates
+router.get('/:id/history', async (req, res) => {
+  const { id } = req.params;
+  const userId = req.query.userId ? Number(req.query.userId) : null;
+  const limit = Math.min(Math.max(Number(req.query.limit) || 50, 1), 500);
+
+  if (!id || !Number.isInteger(Number(id))) {
+    return res.status(400).json({ error: 'invalid_product_id' });
+  }
+
+  try {
+    const params = [id];
+    let sql = `
+      SELECT
+        o.order_id,
+        o.created_at,
+        o.status,
+        c.c_fullname AS customer_name,
+        op.quantity,
+        op.subtotal
+      FROM public.order_products op
+      JOIN public.orders o ON o.order_id = op.order_id
+      LEFT JOIN public.customer c ON c.id = o.customer_id
+      WHERE op.product_id = $1
+    `;
+    if (userId) {
+      params.push(userId);
+      sql += ' AND o.user_id = $2';
+    }
+    sql += ' ORDER BY o.created_at DESC LIMIT ' + limit;
+
+    const { rows } = await pool.query(sql, params);
+
+    const agg = rows.reduce(
+      (acc, r) => {
+        acc.total_quantity += Number(r.quantity || 0);
+        acc.total_sales += Number(r.subtotal || 0);
+        return acc;
+      },
+      { total_quantity: 0, total_sales: 0 },
+    );
+
+    return res.json({ history: rows, ...agg });
+  } catch (err) {
+    console.error('GET /products/:id/history', err);
+    return res.status(500).json({ error: 'internal_error' });
+  }
+});
+
 export default router;
