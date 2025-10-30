@@ -1,7 +1,6 @@
-import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
-import pool from './db.js';
+import dotenv from 'dotenv';
+import express from 'express';
 import authRoutes from './routes/auth.js';
 import uploadRouter from './routes/uploadRoute.mjs';
 
@@ -10,10 +9,9 @@ import productRoutes from './routes/products/crud.js';
 import customerRoutes from './routes/customer/crud.js';
 
 import ordersRouter from './routes/orders.js';
-import orderItemsRouter from './routes/orderItems.js';
-import productsRouter from './routes/products.js';
 import creditsRouter from './routes/credits.js';
 import paymentsRouter from './routes/payments.js';
+import orderItemsRouter from './routes/orderItems.js';
 
 dotenv.config();
 const app = express();
